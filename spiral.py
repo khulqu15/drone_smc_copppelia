@@ -2,6 +2,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import pyplot as plt
 from coppeliasim_zmqremoteapi_client import RemoteAPIClient
 import numpy as np
+import pandas as pd
 import math
 import time
 
@@ -101,5 +102,21 @@ for i, orientation in enumerate(orientations):
 
 plt.tight_layout()
 plt.show()
+
+with pd.ExcelWriter('spiral_trajectory.xlsx', engine='openpyxl') as writer:
+    for i in range(len(quadcopter_handles)):
+        df_position = pd.DataFrame({
+            'X': quadcopter_paths[i][0],
+            'Y': quadcopter_paths[i][1],
+            'Z': quadcopter_paths[i][2]
+        })
+        df_orientation = pd.DataFrame({
+            'Roll': quadcopter_orientations['roll'][i],
+            'Pitch': quadcopter_orientations['pitch'][i],
+            'Yaw': quadcopter_orientations['yaw'][i]
+        })
+        df_quadcopter = pd.concat([df_position, df_orientation], axis=1)
+        sheet_name = f'Quadcopter {i + 1}'
+        df_quadcopter.to_excel(writer, sheet_name=sheet_name, index=False)
 
 sim.stopSimulation()
