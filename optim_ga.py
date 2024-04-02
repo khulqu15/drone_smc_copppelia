@@ -146,15 +146,15 @@ while t < 10:
     quadcopter_orientations_generic = []
     for i, handle in enumerate(quadcopter_handles):
 
-        base_x, base_y = bases[i]
-        x, y, z = spiral_trajectory(t, base_x, base_y, i)
-        desired_x, desired_y, desired_z = x, y, z
+        base_x, base_y = bases[i] ## DONE
+        x, y, z = spiral_trajectory(t, base_x, base_y, i) ## DONE
+        desired_x, desired_y, desired_z = x, y, z ## DONE
         
-        orientation = sim.getObjectOrientation(handle, -1)
-        roll, pitch, yaw = orientation[0], orientation[1], orientation[2]        
-        pos = sim.getObjectPosition(handle, -1)
-        current_x, current_y, current_z = pos[0], pos[1], pos[2]
-        current_orientations = [roll, pitch, yaw]
+        orientation = sim.getObjectOrientation(handle, -1) ## Done
+        roll, pitch, yaw = orientation[0], orientation[1], orientation[2] ## Done        
+        pos = sim.getObjectPosition(handle, -1) ## DONE
+        current_x, current_y, current_z = pos[0], pos[1], pos[2] ## DONE
+        current_orientations = [roll, pitch, yaw] ## DONE
         
         generic.run()
         optimized_params = generic.population[np.argmax([generic.calculate_fitness(individual, [pos[0], pos[1], pos[2]], orientation, [x, y, z], [0.0, 0.0, 0.0]) for individual in generic.population])]
